@@ -77,32 +77,45 @@ class Session(object):
         config.setdefault('SESSION_MONGODB_COLLECT', 'sessions')
         config.setdefault('SESSION_SQLALCHEMY', None)
         config.setdefault('SESSION_SQLALCHEMY_TABLE', 'sessions')
+        config.setdefault('SESSION_AUTODELETE', False)
 
         if config['SESSION_TYPE'] == 'redis':
             session_interface = RedisSessionInterface(
-                config['SESSION_REDIS'], config['SESSION_KEY_PREFIX'],
-                config['SESSION_USE_SIGNER'], config['SESSION_PERMANENT'])
+                config['SESSION_REDIS'],
+                config['SESSION_KEY_PREFIX'],
+                config['SESSION_USE_SIGNER'],
+                config['SESSION_PERMANENT'])
         elif config['SESSION_TYPE'] == 'memcached':
             session_interface = MemcachedSessionInterface(
-                config['SESSION_MEMCACHED'], config['SESSION_KEY_PREFIX'],
-                config['SESSION_USE_SIGNER'], config['SESSION_PERMANENT'])
+                config['SESSION_MEMCACHED'],
+                config['SESSION_KEY_PREFIX'],
+                config['SESSION_USE_SIGNER'],
+                config['SESSION_PERMANENT'])
         elif config['SESSION_TYPE'] == 'filesystem':
             session_interface = FileSystemSessionInterface(
-                config['SESSION_FILE_DIR'], config['SESSION_FILE_THRESHOLD'],
-                config['SESSION_FILE_MODE'], config['SESSION_KEY_PREFIX'],
-                config['SESSION_USE_SIGNER'], config['SESSION_PERMANENT'])
+                config['SESSION_FILE_DIR'],
+                config['SESSION_FILE_THRESHOLD'],
+                config['SESSION_FILE_MODE'],
+                config['SESSION_KEY_PREFIX'],
+                config['SESSION_USE_SIGNER'],
+                config['SESSION_PERMANENT'])
         elif config['SESSION_TYPE'] == 'mongodb':
             session_interface = MongoDBSessionInterface(
-                config['SESSION_MONGODB'], config['SESSION_MONGODB_DB'],
+                config['SESSION_MONGODB'],
+                config['SESSION_MONGODB_DB'],
                 config['SESSION_MONGODB_COLLECT'],
-                config['SESSION_KEY_PREFIX'], config['SESSION_USE_SIGNER'],
+                config['SESSION_KEY_PREFIX'],
+                config['SESSION_USE_SIGNER'],
                 config['SESSION_PERMANENT'])
         elif config['SESSION_TYPE'] == 'sqlalchemy':
             session_interface = SqlAlchemySessionInterface(
-                app, config['SESSION_SQLALCHEMY'],
+                app,
+                config['SESSION_SQLALCHEMY'],
                 config['SESSION_SQLALCHEMY_TABLE'],
-                config['SESSION_KEY_PREFIX'], config['SESSION_USE_SIGNER'],
-                config['SESSION_PERMANENT'])
+                config['SESSION_KEY_PREFIX'],
+                config['SESSION_USE_SIGNER'],
+                config['SESSION_PERMANENT'],
+                config['SESSION_AUTODELETE'])
         else:
             session_interface = NullSessionInterface()
 
